@@ -1,12 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { InputText } from 'primereact/inputtext';
-import { InputNumber } from 'primereact/inputnumber';
-import { MultiSelect } from 'primereact/multiselect';
 import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
         
 
 const RegisterEmployee = () => {
-    const [selectedCities, setSelectedCities] = useState(null);
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
@@ -14,7 +12,7 @@ const RegisterEmployee = () => {
         job_dept: "",
 
     });
-    const jobDept = [
+    const jobDeptOptions = [
         { name: 'Marketing', code: '1' },
         { name: 'Sales', code: '2' },
         { name: 'Logistics', code: '3' },
@@ -23,7 +21,6 @@ const RegisterEmployee = () => {
     ];
 
     const handleChange = (key, value) => {
-        formData[key] = value
         setFormData(prevState => ({
             ...prevState,
             [key]: value
@@ -56,11 +53,11 @@ useEffect(()=>{
                     <InputText  value={formData.email} className='border-solid border-black border rounded' id="email" aria-describedby="username-help" onChange={({ target: { value } }) => handleChange('email', value)}  />
        
                 </div>
-                {/* <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
                     <label htmlFor="lastName">Job title</label>
-                    <MultiSelect className="className='border-solid border-black border rounded" value={formData.email} onChange={(e) => setFormData(e.value)} options={jobDept} optionLabel="name" 
-                    placeholder="Select Cities" maxSelectedLabels={3}  />
-                </div> */}
+                    <Dropdown className="className='border-solid border-black border rounded" value={formData.job_dept}  onChange={({ target: { value } }) => handleChange('job_dept', value)}  options={jobDeptOptions} optionLabel="name" 
+                    placeholder="Select Department"/>
+                </div>
                 <Button  className="className='border-solid border-black border rounded px-5" label="Submit" />
             </form>
         </div>
