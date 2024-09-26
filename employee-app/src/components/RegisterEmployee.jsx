@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import createEmployee from '../services/employeeServices';
+import createEmployee, {getEmployees} from '../services/employeeServices';
 
 const RegisterEmployee = () => {
     const [formData, setFormData] = useState({
@@ -34,7 +34,11 @@ const RegisterEmployee = () => {
     }
 
 useEffect(()=>{
-
+    const getData = async () => {
+        const result = await getEmployees()
+        console.log(result)
+    }
+    getData()
 },[formData])
 
   return (
