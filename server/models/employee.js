@@ -16,9 +16,9 @@ const employeeSchema = new Schema(
             required: true
         },
         job_dept: {
-            type: String,
-            required: true
-        },
+            name: { type: String, required: true },
+            code: { type: String, required: true }
+          }
     }
 )
 

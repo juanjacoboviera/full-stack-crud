@@ -1,6 +1,6 @@
 const Employee = require("../models/employee")
 
-exports.createUser = (req, res, next) =>{
+exports.createEmployee = (req, res, next) =>{
     const employee = new Employee({
         first_name: req.body.first_name,
         last_name: req.body.last_name,
