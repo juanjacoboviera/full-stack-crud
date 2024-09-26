@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-        
+import createEmployee from '../services/employeeServices';
 
 const RegisterEmployee = () => {
     const [formData, setFormData] = useState({
@@ -29,6 +29,7 @@ const RegisterEmployee = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault()
+        createEmployee(formData)
         console.log(formData)
     }
 
