@@ -29,4 +29,4 @@ mongoose
 	  });
 
 
-app.use("/employees", employeeRoutes)
+app.use("/employee", employeeRoutes)

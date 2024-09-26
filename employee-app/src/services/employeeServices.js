@@ -1,8 +1,8 @@
 export default async function createEmployee(employeeData) {
   const corsAnywhere = 'https://cors-anywhere.herokuapp.com/';
-  const myUrl = 'http://localhost:8080/employees'
+  const myUrl = 'http://localhost:8080/employee/employee'
     try {
-      const response = await fetch(corsAnywhere + myUrl, {
+      const response = await fetch(myUrl, {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json', 
