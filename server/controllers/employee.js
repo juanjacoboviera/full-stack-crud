@@ -19,3 +19,17 @@ exports.createEmployee = (req, res, next) =>{
     .catch((error)=> console.log(error))
     
 }
+
+exports.getEmployees = async (req, res, next) => {
+    try {
+        const employees = await Employee.find();
+        console.log(employees)
+        res.status(200).send(employees); 
+        console.log('Operation succeeded:', employees);
+    } catch (error) {
+        console.error('An error occurred:', error.message);
+
+        res.status(500).send({ message: 'An error occurred while retrieving employees.' });
+
+    }
+};
