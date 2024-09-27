@@ -43,27 +43,33 @@ useEffect(()=>{
 
   return (
     <div className='layout flex justify-center'>
-        <div className="container w-1/2">
-            <form id='registerForm'  className='flex flex-row gap-5 flex-wrap justify-center mt-10' action="" onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-2">
-                    <label htmlFor="firstName">First name</label>
-                    <InputText value={formData.first_name} className='border-solid border-black border rounded' id="first_name" aria-describedby="username-help" onChange={({ target: { value } }) => handleChange('first_name', value)}  />
+        <div className="container flex justify-center w-3/4 mt-10">
+            <form id='registerForm'  className='flex flex-row gap-5 flex-wrap justify-center w-full p-10 border-solid border border-black' action="" onSubmit={handleSubmit}>
+                <div className='flex w-2/3 gap-3'>
+                    <div className="flex flex-col w-1/2 gap-2 justify-center">
+                        <label htmlFor="firstName">First name</label>
+                        <InputText value={formData.first_name} className='border-solid border-black border rounded' id="first_name" aria-describedby="username-help" onChange={({ target: { value } }) => handleChange('first_name', value)}  />
+                    </div>
+                    <div className="flex flex-col w-1/2 gap-2">
+                        <label htmlFor="lastName">Last Name</label>
+                        <InputText  value={formData.last_name} className='border-solid border-black border rounded' id="lastName" aria-describedby="username-help" onChange={({ target: { value } }) => handleChange('last_name', value)}  />
+                    </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                    <label htmlFor="lastName">Last Name</label>
-                    <InputText  value={formData.last_name} className='border-solid border-black border rounded' id="lastName" aria-describedby="username-help" onChange={({ target: { value } }) => handleChange('last_name', value)}  />
+                <div className='flex w-2/3 gap-3'>
+                    <div className="flex flex-col gap-2 w-1/2">
+                        <label htmlFor="email">E-mail</label>
+                        <InputText  value={formData.email} className='border-solid border-black border rounded' id="email" aria-describedby="username-help" onChange={({ target: { value } }) => handleChange('email', value)}  />
+        
+                    </div>
+                    <div className="flex flex-col gap-2 w-1/2">
+                        <label htmlFor="lastName">Job title</label>
+                        <Dropdown className="className='border-solid border-black border rounded" panelClassName='border-solid border-black border rounded bg-white' value={formData.job_dept}  onChange={({ target: { value } }) => handleChange('job_dept', value)}  options={jobDeptOptions} optionLabel="name" 
+                        placeholder="Select Department"/>
+                    </div>
                 </div>
-                <div className="flex flex-col gap-2">
-                    <label htmlFor="email">E-mail</label>
-                    <InputText  value={formData.email} className='border-solid border-black border rounded' id="email" aria-describedby="username-help" onChange={({ target: { value } }) => handleChange('email', value)}  />
-       
+                <div className='flex w-full justify-center'>
+                    <Button  className="className='border-solid border-black border rounded px-5" label="Submit" />
                 </div>
-                <div className="flex flex-col gap-2">
-                    <label htmlFor="lastName">Job title</label>
-                    <Dropdown className="className='border-solid border-black border rounded" value={formData.job_dept}  onChange={({ target: { value } }) => handleChange('job_dept', value)}  options={jobDeptOptions} optionLabel="name" 
-                    placeholder="Select Department"/>
-                </div>
-                <Button  className="className='border-solid border-black border rounded px-5" label="Submit" />
             </form>
         </div>
     </div>
