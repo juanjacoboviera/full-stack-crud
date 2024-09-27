@@ -38,7 +38,9 @@ export default async function createEmployee(employeeData) {
     
         const result = await response.json();
         
-        console.log('Employee List:', result);
+        // console.log('Employee List:', result);
+
+        return result
     
       } catch (error) {
         console.error('Error fetching employees:', error);

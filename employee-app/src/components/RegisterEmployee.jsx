@@ -34,11 +34,7 @@ const RegisterEmployee = () => {
     }
 
 useEffect(()=>{
-    const getData = async () => {
-        const result = await getEmployees()
-        console.log(result)
-    }
-    getData()
+
 },[formData])
 
   return (

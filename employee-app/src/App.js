@@ -1,12 +1,13 @@
 import './styles.css';
-import DataTable from './components/DataTable';
+
 import RegisterEmployee from './components/RegisterEmployee';
+import EmployeeDataTable from './components/EmployeeDataTable';
 
 function App() {
   return (
    <>
-   <RegisterEmployee/>
-   {/* <DataTable/> */}
+   {/* <RegisterEmployee/> */}
+   <EmployeeDataTable/>
 
    </>
   );
