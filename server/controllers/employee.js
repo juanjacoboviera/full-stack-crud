@@ -33,3 +33,17 @@ exports.getEmployees = async (req, res, next) => {
 
     }
 };
+
+exports.getEmployee = async (req, res, next) => {
+    try {
+        const employee = await Employee.findById(req.params.id);
+        console.log(employee)
+        res.status(200).send(employee); 
+        console.log('Operation succeeded:', employee);
+    } catch (error) {
+        console.error('An error occurred:', error.message);
+
+        res.status(500).send({ message: 'An error occurred while retrieving employee.' });
+
+    }
+};

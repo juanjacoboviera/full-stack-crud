@@ -3,7 +3,8 @@ const router = express.Router()
 const employeesController = require("../controllers/employee")
 
 
-router.post("/employee", employeesController.createEmployee )
+router.post("/createEmployee", employeesController.createEmployee )
 router.get("/employees", employeesController.getEmployees )
+router.get("/employee/:id", employeesController.getEmployee )
 
 module.exports = router

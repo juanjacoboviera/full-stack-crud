@@ -3,6 +3,7 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import createEmployee, {getEmployees} from '../services/employeeServices';
+import Nav from './Nav';
 
 const RegisterEmployee = () => {
     const [formData, setFormData] = useState({
