@@ -2,17 +2,18 @@ import React, {useState, useEffect} from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import createEmployee, {getEmployees} from '../services/employeeServices';
-import Nav from './Nav';
+import createEmployee, {getEmployee} from '../services/employeeServices';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const RegisterEmployee = () => {
+    let { employeeId } = useParams();
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
         email: "",
         job_dept: "",
-
     });
+
     const jobDeptOptions = [
         { name: 'Marketing', code: '1' },
         { name: 'Sales', code: '2' },
@@ -35,8 +36,20 @@ const RegisterEmployee = () => {
     }
 
 useEffect(()=>{
-
-},[formData])
+    setFormData({
+        first_name: "",
+        last_name: "",
+        email: "",
+        job_dept: "",
+    })
+    if(employeeId){
+        const getData = async () => {
+            const employee = await getEmployee(employeeId)
+            setFormData(employee)        
+        }
+        getData()
+    }
+},[employeeId])
 
   return (
     <div className='layout flex justify-center'>

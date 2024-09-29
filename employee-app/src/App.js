@@ -10,6 +10,7 @@ function App() {
       <Nav/>
       <Routes>
           <Route exact path="/" element={ <RegisterEmployee/>}/>
+          <Route exact path="/:employeeId" element={ <RegisterEmployee/>}/>
           <Route exact path="/employees" element={ <EmployeeDataTable/>} /> 
       </Routes>
     </BrowserRouter>
