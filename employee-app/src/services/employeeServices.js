@@ -1,5 +1,5 @@
 export default async function createEmployee(employeeData) {
-  const myUrl = 'http://localhost:8080/api/employee'
+  const myUrl = 'http://localhost:8080/api/createEmployee'
     try {
       const response = await fetch(myUrl, {
         method: 'POST', 
@@ -46,6 +46,31 @@ export default async function createEmployee(employeeData) {
         console.error('Error fetching employees:', error);
       }
     }
+  
+    export async function getEmployee(id) {
+      const myUrl = `http://localhost:8080/api/employee/${id}`
+        try {
+          const response = await fetch(myUrl, {
+            method: 'GET', 
+            headers: {
+              'Accept': 'application/json', 
+            },
+          });
+      
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+          }
+      
+          const result = await response.json();
+          
+          console.log('Employee List:', result);
+  
+          return result
+      
+        } catch (error) {
+          console.error('Error fetching employees:', error);
+        }
+      }
      
 
   

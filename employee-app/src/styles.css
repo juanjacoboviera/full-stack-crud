@@ -1,0 +1,13 @@
+.p-datatable-thead tr th {
+    border: 1px solid black;
+    text-align: center;
+}
+
+.p-datatable-thead .p-column-header-content {
+    display: flex;
+    justify-content: center;
+}
+
+.p-datatable-tbody tr td {
+    border-right: 1px solid black;
+}
