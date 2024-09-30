@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import createEmployee, {getEmployee} from '../services/employeeServices';
+import createEmployee, {getEmployee, updateEmployee} from '../services/employeeServices';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const RegisterEmployee = () => {
+    const navigate = useNavigate();
     let { employeeId } = useParams();
     const [formData, setFormData] = useState({
         first_name: "",
@@ -31,8 +32,13 @@ const RegisterEmployee = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault()
-        createEmployee(formData)
         console.log(formData)
+        if(employeeId){
+            updateEmployee(employeeId, formData)
+        }else{
+            createEmployee(formData)
+        }
+        navigate('/employees')
     }
 
 useEffect(()=>{

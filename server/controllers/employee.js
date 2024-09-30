@@ -47,3 +47,26 @@ exports.getEmployee = async (req, res, next) => {
 
     }
 };
+
+exports.updateEmployee = async (req, res) => {
+    if(!req.body) {
+        return res.status(400).send({
+            message: "Data to update cannot be empty!"
+        });
+    }
+    
+    const id = req.params.id;
+    const updatedEmployee = await Employee.findByIdAndUpdate(id, req.body, {new: true}).then(data => {
+        if (!updatedEmployee) {
+            res.status(404).send({
+                message: `User not found.`
+            });
+        }else{
+            res.send({ message: "User updated successfully.", userData: updatedEmployee })
+        }
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message
+        });
+    });
+};
