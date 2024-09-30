@@ -70,3 +70,16 @@ exports.updateEmployee = async (req, res) => {
         });
     });
 };
+
+exports.deleteEmployee = async (req, res, next) => {
+       const employee = await Employee.findByIdAndDelete(req.params.id)
+            try{
+                res.status(204).send(); 
+                console.log('Employee deleted:', employee);
+            }catch (error) {
+                res.status(204).send(); 
+                console.error('An error occurred:', error.message);        
+            };
+};
+
+

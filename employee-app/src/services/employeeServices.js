@@ -97,6 +97,34 @@ export async function updateEmployee(id, employeeData) {
       console.error('Error fetching employees:', error);
     }
 }
+
+
+export async function deleteEmployee(id) {
+  const myUrl = `http://localhost:8080/api/employee/${id}`
+    try {
+      const response = await fetch(myUrl, {
+        method: 'DELETE', 
+        headers: {
+          'Accept': 'application/json', 
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      let result
+      if (response.status !== 204) { // Check if there's a body
+        result = await response.json();
+      }
+      
+      // console.log('Employee List:', result);
+
+      return result
+  
+    } catch (error) {
+      console.error('Error deleting employees:', error);
+    }
+}
   
 
   
