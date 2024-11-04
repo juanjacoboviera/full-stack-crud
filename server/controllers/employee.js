@@ -5,6 +5,7 @@ exports.createEmployee = (req, res, next) =>{
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
+        password: req.body.password,
         job_dept: req.body.job_dept
     });
     employee
