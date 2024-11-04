@@ -8,23 +8,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import registerImg from "../assets/scribble.svg"
 
 const RegisterUser = () => {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     let { employeeId } = useParams();
     const [formData, setFormData] = useState({
         first_name: "",
         last_name: "",
         email: "",
-        job_dept: "",
-        password: ""
+        password: "",
+        confirm_password: ""
     });
-
-    const jobDeptOptions = [
-        { name: 'Marketing', code: '1' },
-        { name: 'Sales', code: '2' },
-        { name: 'Logistics', code: '3' },
-        { name: 'HHRR', code: '4' },
-        { name: 'Billing', code: '5' }
-    ];
 
     const handleChange = (key, value) => {
         setFormData(prevState => ({
@@ -35,35 +27,34 @@ const RegisterUser = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault()
-        console.log(formData)
-        if(employeeId){
-            updateEmployee(employeeId, formData)
-        }else{
-            createEmployee(formData)
-        }
-        navigate('/employees')
+        console.log(formData)   
+        createEmployee(formData)
+        
+        // navigate('/employees')
     }
 
 useEffect(()=>{
-    setFormData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        job_dept: "",
-    })
-    if(employeeId){
-        const getData = async () => {
-            const employee = await getEmployee(employeeId)
-            setFormData(employee)        
-        }
-        getData()
-    }
-},[employeeId])
-
+    // setFormData({
+    //     first_name: "",
+    //     last_name: "",
+    //     email: "",
+    //     password: "",
+    //     confirm_password: "",
+    // })
+    // if(employeeId){
+    //     const getData = async () => {
+    //         const employee = await getEmployee(employeeId)
+    //         console.log(employee)
+    //         setFormData(employee)        
+    //     }
+    //     getData()
+    // }
+},[])
+    console.log(formData)
   return (
     <div className='layout flex justify-center'>
         <div className="container flex justify-center w-3/4 mt-5 mb-5 gap-5">
-            <img src={registerImg} width="auto" alt="" />
+            <img src={registerImg} width="45%" alt="" />
             <form id='registerForm'  className='flex flex-col gap-5 items-center justify-center w-full p-10 border-solid border border-black' action="" onSubmit={handleSubmit}>
                 <div className='flex flex-col w-2/3 gap-3'>
                     <div className="flex flex-col w-full gap-2 justify-center">
@@ -83,11 +74,11 @@ useEffect(()=>{
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <label htmlFor="lastName">Password</label>
-                        <Password inputClassName='w-full' className='border-solid border-black border rounded' value={formData?.password} onChange={({ target: { value } }) => handleChange('password', value)} feedback={false} />
+                        <Password  value={formData?.password} inputClassName='w-full' className='border-solid border-black border rounded' onChange={({ target: { value } }) => handleChange('password', value)} feedback={false} />
                     </div>
                     <div className="flex flex-col gap-2 w-full">
                         <label htmlFor="lastName">Confirm Password</label>
-                        <Password inputClassName='w-full' className='border-solid border-black border rounded' value={formData?.password} onChange={({ target: { value } }) => handleChange('password', value)} feedback={false} />
+                        <Password  value={formData?.confirm_password} inputClassName='w-full' className='border-solid border-black border rounded' onChange={({ target: { value } }) => handleChange('confirm_password', value)} feedback={false} />
                     </div>
                 </div>
                 <div className='flex w-full justify-center'>
