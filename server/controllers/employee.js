@@ -1,11 +1,15 @@
 const Employee = require("../models/employee")
+const bcrypt = require('bcrypt');
 
 exports.createEmployee = (req, res, next) =>{
+    const saltRounds = 10;
+    const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
+
     const employee = new Employee({
         first_name: req.body.first_name,
         last_name: req.body.last_name,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
         job_dept: req.body.job_dept
     });
     employee
