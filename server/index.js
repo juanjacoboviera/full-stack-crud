@@ -2,6 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const employeeRoutes= require("./routes/employee")
+const loginRoutes= require("./routes/login")
 const app = express()
 
   	app.use(bodyParser.json());
@@ -13,7 +14,8 @@ const app = express()
 		next();
 	})
 
-	app.use("/api", employeeRoutes)
+	app.use("/api", loginRoutes);
+	app.use("/api", employeeRoutes);
 	
 
 	mongoose
