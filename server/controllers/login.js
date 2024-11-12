@@ -17,12 +17,12 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate a JWT token (or another method of authentication)
-    // const token = jwt.sign(
-    //   { userId: user.id, email: user.email },
-    //   process.env.JWT_SECRET, // Store secret in an .env file
-    //   { expiresIn: "1h" } // Token expiration
-    // );
+    Generate a JWT token (or another method of authentication)
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET, // Store secret in an .env file
+      { expiresIn: "1h" } // Token expiration
+    );
 
     // Send token in response
     res.status(200).json({ message: "Login successful" });
