@@ -25,6 +25,12 @@ const LoginForm = () => {
         }));
     }
 
+    function setTokenInCookie(token) {
+        const expirationDate = new Date();
+        expirationDate.setHours(expirationDate.getHours() + 1); 
+        document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/; Secure; HttpOnly; SameSite=Strict`;
+      }
+
     const handleSubmit = async (e) =>{
         e.preventDefault()
         console.log(formData)   
@@ -33,6 +39,7 @@ const LoginForm = () => {
             const data = await response.json()
             console.log(data)
             if(data.token){
+                setTokenInCookie(data.token)
                 navigate('/dashboard')
             }
         } catch (error) {
