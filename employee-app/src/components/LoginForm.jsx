@@ -6,9 +6,12 @@ import { Dropdown } from 'primereact/dropdown';
 import { login } from '../services/auth';
 import { useParams, useNavigate } from 'react-router-dom';
 import registerImg from "../assets/scribble.svg"
+import { Link } from 'react-router-dom';
+import Dashboard from './Dashboard';
 
 const LoginForm = () => {
     // const navigate = useNavigate();
+    const navigate = useNavigate()
     let { employeeId } = useParams();
     const [formData, setFormData] = useState({
         email: "",
@@ -29,6 +32,9 @@ const LoginForm = () => {
             const response = await login(formData)
             const data = await response.json()
             console.log(data)
+            if(data.token){
+                navigate('/dashboard')
+            }
         } catch (error) {
             console.log(error)
         }
@@ -53,6 +59,7 @@ const LoginForm = () => {
                     <div className="flex flex-col gap-2 w-full">
                         <label htmlFor="lastName">Password</label>
                         <Password  value={formData?.password} inputClassName='w-full' className='border-solid border-black border rounded' onChange={({ target: { value } }) => handleChange('password', value)} feedback={false} />
+                        <small>Not a user? <Link to="/register">Register here.</Link></small>
                     </div>
                 </div>
                 <div className='flex w-full justify-center'>
