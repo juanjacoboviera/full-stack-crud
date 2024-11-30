@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
@@ -8,9 +8,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import registerImg from "../assets/scribble.svg"
 import { Link } from 'react-router-dom';
 import Dashboard from './Dashboard';
+import { GlobalStore } from '../GlobalProvider';
 
 const LoginForm = () => {
-    // const navigate = useNavigate();
+    const {setToken} = useContext(GlobalStore)
     const navigate = useNavigate()
     let { employeeId } = useParams();
     const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const LoginForm = () => {
     function setTokenInCookie(token) {
         const expirationDate = new Date();
         expirationDate.setHours(expirationDate.getHours() + 1); 
-        document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/; Secure; HttpOnly; SameSite=Strict`;
+        document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}`;
       }
 
     const handleSubmit = async (e) =>{
@@ -37,21 +38,17 @@ const LoginForm = () => {
         try {
             const response = await login(formData)
             const data = await response.json()
-            console.log(data)
             if(data.token){
+                setToken(data.token)
                 setTokenInCookie(data.token)
                 navigate('/dashboard')
             }
         } catch (error) {
             console.log(error)
         }
-        
-
-        
-        // navigate('/employees')
     }
 
-    console.log(formData)
+    
   return (
     <div className='layout flex justify-center'>
         <div className="container flex justify-center w-3/4 mt-5 mb-5 gap-5">

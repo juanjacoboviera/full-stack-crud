@@ -5,6 +5,7 @@ import  {getEmployees, deleteEmployee} from '../services/employeeServices';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
+import { getCookie } from '../helpers/cookies';
 
 const EmployeeDataTable = () => {
   const [employees, setEmployees] = useState([]);
@@ -12,11 +13,16 @@ const EmployeeDataTable = () => {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    const getData = async () => {
-        const employeeList = await getEmployees()
+    const token = getCookie('token')
+    const getData = async (token) => {
+        const employeeList = await getEmployees(token)
         setEmployees(employeeList) 
     }
-    getData()
+    if(token){
+      getData(token)
+    }else{
+      console.log('Token does not exist or already expired!')
+    }
   },[userId])
   
   const editEmployee =  (id) => {
@@ -54,7 +60,7 @@ const EmployeeDataTable = () => {
                 <Column 
                 key={col.field} 
                 field={col.field} header={col.header} 
-                body={col.field === 'job_dept.name' ? (rowData) => rowData.job_dept.name : undefined || col.field === actionsBodyTemplate ? (rowData)=> actionsBodyTemplate(rowData) : undefined}            
+                // body={col.field === 'job_dept.name' ? (rowData) => rowData.job_dept.name : undefined || col.field === actionsBodyTemplate ? (rowData)=> actionsBodyTemplate(rowData) : undefined}xw         
                 />
             ))}
         </DataTable>

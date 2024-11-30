@@ -1,10 +1,11 @@
-export default async function createEmployee(employeeData) {
+export default async function createEmployee(employeeData, token) {
   const myUrl = 'http://localhost:8080/api/createEmployee'
     try {
       const response = await fetch(myUrl, {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json', 
+          'Authorization': 'Bearer' + token
         },
         body: JSON.stringify(employeeData),
       });
@@ -22,13 +23,15 @@ export default async function createEmployee(employeeData) {
     }
 }
 
-export async function getEmployees() {
+export async function getEmployees(token) {
+
   const myUrl = 'http://localhost:8080/api/employees'
     try {
       const response = await fetch(myUrl, {
         method: 'GET', 
         headers: {
-          'Accept': 'application/json', 
+          'Accept': 'application/json',
+          'Authorization': `Bearer=${token}`
         },
       });
   
@@ -47,13 +50,14 @@ export async function getEmployees() {
     }
 }
 
-export async function getEmployee(id) {
+export async function getEmployee(id, token) {
   const myUrl = `http://localhost:8080/api/employee/${id}`
     try {
       const response = await fetch(myUrl, {
         method: 'GET', 
         headers: {
           'Accept': 'application/json', 
+          'Authorization': `Bearer=${token}`
         },
       });
   
@@ -72,13 +76,14 @@ export async function getEmployee(id) {
     }
 }
 
-export async function updateEmployee(id, employeeData) {
+export async function updateEmployee(id, employeeData, token) {
   const myUrl = `http://localhost:8080/api/employee/${id}`
     try {
       const response = await fetch(myUrl, {
         method: 'PATCH', 
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer=${token}`
         },
         body: JSON.stringify(employeeData),
       });
@@ -99,13 +104,14 @@ export async function updateEmployee(id, employeeData) {
 }
 
 
-export async function deleteEmployee(id) {
+export async function deleteEmployee(id, token) {
   const myUrl = `http://localhost:8080/api/employee/${id}`
     try {
       const response = await fetch(myUrl, {
         method: 'DELETE', 
         headers: {
           'Accept': 'application/json', 
+          'Authorization': `Bearer=${token}`
         },
       });
   

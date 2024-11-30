@@ -15,7 +15,8 @@ const RegisterUser = () => {
         last_name: "",
         email: "",
         password: "",
-        confirm_password: ""
+        confirm_password: "",
+        // user_type: "admin"
     });
 
     const handleChange = (key, value) => {
