@@ -1,11 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
+import { Password } from 'primereact/password';
 import createEmployee, {getEmployee, updateEmployee} from '../services/employeeServices';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getCookie } from '../helpers/cookies';
+import { GlobalStore } from '../GlobalProvider';
 
 const RegisterEmployee = () => {
+    const {token} = useContext(GlobalStore)
     const navigate = useNavigate();
     let { employeeId } = useParams();
     const [formData, setFormData] = useState({
@@ -13,7 +17,15 @@ const RegisterEmployee = () => {
         last_name: "",
         email: "",
         job_dept: "",
+        password: "",
+        confirm_password: "",
+        role: {name: "", code: ""},
     });
+
+    const roleOptions = [
+        { name: 'User', code: 'user' },
+        { name: 'Admin', code: 'admin' },
+    ];
 
     const jobDeptOptions = [
         { name: 'Marketing', code: '1' },
@@ -23,6 +35,7 @@ const RegisterEmployee = () => {
         { name: 'Billing', code: '5' }
     ];
 
+
     const handleChange = (key, value) => {
         setFormData(prevState => ({
             ...prevState,
@@ -30,15 +43,18 @@ const RegisterEmployee = () => {
         }));
     }
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault()
-        console.log(formData)
-        if(employeeId){
-            updateEmployee(employeeId, formData)
-        }else{
-            createEmployee(formData)
+        try {
+            if(employeeId){
+                await updateEmployee(employeeId, formData, token)
+            }else{
+                await createEmployee(formData, token)
+            }
+            navigate('/employees')
+        } catch (error) {
+            console.log({error: error})
         }
-        navigate('/employees')
     }
 
 useEffect(()=>{
@@ -50,7 +66,7 @@ useEffect(()=>{
     })
     if(employeeId){
         const getData = async () => {
-            const employee = await getEmployee(employeeId)
+            const employee = await getEmployee(employeeId, token)
             setFormData(employee)        
         }
         getData()
@@ -78,9 +94,19 @@ useEffect(()=>{
         
                     </div>
                     <div className="flex flex-col gap-2 w-1/2">
-                        <label htmlFor="lastName">Job title</label>
-                        <Dropdown className="className='border-solid border-black border rounded" panelClassName='border-solid border-black border rounded bg-white' value={formData?.job_dept}  onChange={({ target: { value } }) => handleChange('job_dept', value)}  options={jobDeptOptions} optionLabel="name" 
-                        placeholder="Select Department"/>
+                        <label htmlFor="role">Role</label>
+                        <Dropdown className="className='border-solid border-black border rounded" panelClassName='border-solid border-black border rounded bg-white' value={formData?.role}  onChange={({ target: { value } }) => handleChange('role', value)}  options={roleOptions} optionLabel="name" 
+                        placeholder="Select Role"/>
+                    </div>
+                </div>
+                <div className='flex w-2/3 gap-3'>
+                    <div className="flex flex-col gap-2 w-1/2">
+                        <label htmlFor="lastName">Password</label>
+                        <Password  value={formData?.password} inputClassName='w-full' className='border-solid border-black border rounded' onChange={({ target: { value } }) => handleChange('password', value)} feedback={false} />
+                    </div>
+                    <div className="flex flex-col gap-2 w-1/2">
+                        <label htmlFor="lastName">Confirm Password</label>
+                        <Password  value={formData?.confirm_password} inputClassName='w-full' className='border-solid border-black border rounded' onChange={({ target: { value } }) => handleChange('confirm_password', value)} feedback={false} />
                     </div>
                 </div>
                 <div className='flex w-full justify-center'>

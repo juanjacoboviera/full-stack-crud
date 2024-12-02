@@ -3,7 +3,7 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import createEmployee, {getEmployee, updateEmployee} from '../services/employeeServices';
+import {registerUser} from '../services/employeeServices';
 import { useParams, useNavigate } from 'react-router-dom';
 import registerImg from "../assets/scribble.svg"
 
@@ -15,7 +15,11 @@ const RegisterUser = () => {
         last_name: "",
         email: "",
         password: "",
-        confirm_password: ""
+        confirm_password: "",
+        role: { 
+        name:  "User",
+        code: "user"
+        }
     });
 
     const handleChange = (key, value) => {
@@ -28,7 +32,7 @@ const RegisterUser = () => {
     const handleSubmit = (e) =>{
         e.preventDefault()
         console.log(formData)   
-        createEmployee(formData)
+        registerUser(formData)
         
         // navigate('/employees')
     }

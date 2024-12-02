@@ -1,7 +1,7 @@
 const Employee = require("../models/employee")
 const bcrypt = require('bcrypt');
 
-exports.createEmployee = (req, res, next) =>{
+exports.registerUser = (req, res, next) =>{
     const saltRounds = 10;
     const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
 
@@ -10,7 +10,8 @@ exports.createEmployee = (req, res, next) =>{
         last_name: req.body.last_name,
         email: req.body.email,
         password: hashedPassword,
-        job_dept: req.body.job_dept
+        job_dept: req.body.job_dept,
+        role: req.body.role
     });
     employee
     .save()
@@ -24,6 +25,32 @@ exports.createEmployee = (req, res, next) =>{
     .catch((error)=> console.log(error))
     
 }
+
+exports.createEmployee = (req, res, next) =>{
+    const saltRounds = 10;
+    const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
+
+    const employee = new Employee({
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        password: hashedPassword,
+        job_dept: req.body.job_dept,
+        role: req.body.role
+    });
+    employee
+    .save()
+    .then((result) =>{
+        console.log(result)
+        res.status(201).json({
+            message: "Employee created successfully!",
+            employee: result
+        })
+    })
+    .catch((error)=> console.log("this is the error:", error))
+    
+}
+
 
 exports.getEmployees = async (req, res, next) => {
     try {
@@ -42,8 +69,9 @@ exports.getEmployees = async (req, res, next) => {
 exports.getEmployee = async (req, res, next) => {
     try {
         const employee = await Employee.findById(req.params.id);
+        const {role, _id, first_name, last_name, email} = employee
         console.log(employee)
-        res.status(200).send(employee); 
+        res.status(200).send({role, _id, first_name, last_name, email}); 
         console.log('Operation succeeded:', employee);
     } catch (error) {
         console.error('An error occurred:', error.message);
@@ -54,14 +82,30 @@ exports.getEmployee = async (req, res, next) => {
 };
 
 exports.updateEmployee = async (req, res) => {
+    let userPassword = ""
     if(!req.body) {
         return res.status(400).send({
             message: "Data to update cannot be empty!"
         });
     }
-    
+    if(!req.body.password){
+        const employee = await Employee.findById(req.body._id);
+        const {password} = employee
+        userPassword = password
+    }else{
+        const saltRounds = 10;
+        userPassword = bcrypt.hashSync(req.body.password, saltRounds);
+    }
+    const updatedData = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        email: req.body.email,
+        password: userPassword,
+        job_dept: req.body.job_dept,
+        role: req.body.role
+    }
     const id = req.params.id;
-    const updatedEmployee = await Employee.findByIdAndUpdate(id, req.body, {new: true}).then(data => {
+    const updatedEmployee = Employee.findByIdAndUpdate(id, updatedData, {new: true}).then(data => {
         if (!updatedEmployee) {
             res.status(404).send({
                 message: `User not found.`
