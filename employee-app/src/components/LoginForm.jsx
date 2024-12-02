@@ -11,7 +11,7 @@ import Dashboard from './Dashboard';
 import { GlobalStore } from '../GlobalProvider';
 
 const LoginForm = () => {
-    const {setToken} = useContext(GlobalStore)
+    const {setToken, setUser} = useContext(GlobalStore)
     const navigate = useNavigate()
     let { employeeId } = useParams();
     const [formData, setFormData] = useState({
@@ -38,8 +38,11 @@ const LoginForm = () => {
         try {
             const response = await login(formData)
             const data = await response.json()
+            const {email, first_name, last_name, role, _id} = data.user
+            console.log(data)
             if(data.token){
                 setToken(data.token)
+                setUser({email, first_name, last_name, role, _id})
                 setTokenInCookie(data.token)
                 navigate('/dashboard')
             }

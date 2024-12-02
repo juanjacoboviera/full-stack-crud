@@ -11,9 +11,9 @@ const EmployeeDataTable = () => {
   const [employees, setEmployees] = useState([]);
   const [userId, setUserId] = useState('');
   const navigate = useNavigate();
+  const token = getCookie('token')
 
   useEffect(()=>{
-    const token = getCookie('token')
     const getData = async (token) => {
         const employeeList = await getEmployees(token)
         setEmployees(employeeList) 
@@ -24,14 +24,13 @@ const EmployeeDataTable = () => {
       console.log('Token does not exist or already expired!')
     }
   },[userId])
-  
   const editEmployee =  (id) => {
     navigate(`/${id}`);
   }
 
   const removeEmployee = async (id) => {
-    deleteEmployee(id)
-    setUserId(id)
+    deleteEmployee(id, token)
+    setUserId(id, token)
   }
 
   const actionsBodyTemplate = (rowData) =>{

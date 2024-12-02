@@ -22,7 +22,11 @@ const employeeSchema = new Schema(
         job_dept: {
             name: { type: String, required: false },
             code: { type: String, required: false }
-          }
+          },
+        role:{
+            name: { type: String, required: true },
+            code: { type: String, required: true }
+        }
     }
 )
 

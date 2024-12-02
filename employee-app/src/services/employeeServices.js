@@ -1,3 +1,28 @@
+export async function registerUser(employeeData, token) {
+  const myUrl = 'http://localhost:8080/api/registerUser'
+    try {
+      const response = await fetch(myUrl, {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(employeeData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      
+      console.log('Employee created:', result);
+  
+    } catch (error) {
+      console.error('Error creating employee:', error);
+    }
+}
+
 export default async function createEmployee(employeeData, token) {
   const myUrl = 'http://localhost:8080/api/createEmployee'
     try {
@@ -5,7 +30,7 @@ export default async function createEmployee(employeeData, token) {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json', 
-          'Authorization': 'Bearer' + token
+          'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify(employeeData),
       });
@@ -31,7 +56,7 @@ export async function getEmployees(token) {
         method: 'GET', 
         headers: {
           'Accept': 'application/json',
-          'Authorization': `Bearer=${token}`
+          'Authorization': 'Bearer ' + token
         },
       });
   
@@ -57,7 +82,7 @@ export async function getEmployee(id, token) {
         method: 'GET', 
         headers: {
           'Accept': 'application/json', 
-          'Authorization': `Bearer=${token}`
+          'Authorization': 'Bearer ' + token
         },
       });
   
@@ -83,7 +108,7 @@ export async function updateEmployee(id, employeeData, token) {
         method: 'PATCH', 
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer=${token}`
+          'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify(employeeData),
       });
@@ -111,7 +136,7 @@ export async function deleteEmployee(id, token) {
         method: 'DELETE', 
         headers: {
           'Accept': 'application/json', 
-          'Authorization': `Bearer=${token}`
+          'Authorization': 'Bearer ' + token
         },
       });
   
