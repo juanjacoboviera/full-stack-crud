@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
 const employeeRoutes= require("./routes/employee")
 const authRoutes= require("./routes/auth")
+const taskRoutes= require("./routes/task")
 require("dotenv").config();
 const app = express()
 
@@ -17,6 +18,7 @@ const app = express()
 
 	app.use("/api", authRoutes);
 	app.use("/api", employeeRoutes);
+	app.use("/api", taskRoutes);
 	
 
 	mongoose
