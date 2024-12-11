@@ -7,7 +7,7 @@ exports.createTask = async (req, res, next) =>{
         description: req.body.description,
         duration: req.body.duration,
         date_completed: req.body.date_completed,
-        userId: new ObjectId(req.body.userId),
+        userId: new ObjectId(req.body.tasked_userId),
     });
 
     try {

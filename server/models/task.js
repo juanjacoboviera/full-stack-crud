@@ -11,15 +11,24 @@ const taskSchema = new Schema(
             type: String,
             required: true
         },
-        duration: {
+        hours_taken: {
             type: Number,
-            required: true
+            required: false
         },
         date_completed: {
             type: Date,
             required: false
         },
-        userId: {
+        task_completed: {
+            type: Boolean,
+            required: false
+        },
+        tasked_userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'employee', 
+            required: true
+          },
+          task_creator_userId: {
             type: Schema.Types.ObjectId,
             ref: 'employee', 
             required: true
