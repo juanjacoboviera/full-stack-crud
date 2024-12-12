@@ -23,16 +23,15 @@ const taskSchema = new Schema(
             type: Boolean,
             required: false
         },
-        tasked_userId: {
-            type: Schema.Types.ObjectId,
-            ref: 'employee', 
-            required: true
-          },
-          task_creator_userId: {
-            type: Schema.Types.ObjectId,
-            ref: 'employee', 
-            required: true
-          }
+        tasked_user: {
+            name: { type: String, required: true },
+            id: { type: Schema.Types.ObjectId, ref: 'employee', required: true }
+    
+        },
+        task_creator: {
+        name: { type: String, required: true },
+        id: { type: Schema.Types.ObjectId, ref: 'employee', required: true }
+        }
     }
 )
 
