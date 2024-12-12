@@ -8,7 +8,7 @@ import createEmployee, {getEmployees, updateEmployee} from '../services/employee
 import { useParams, useNavigate } from 'react-router-dom';
 import { getCookie } from '../helpers/cookies';
 import { GlobalStore } from '../GlobalProvider';
-
+import { createTask } from '../services/taskServices';
 
 const CreateTask = () => {
     const {user} = useContext(GlobalStore)
@@ -34,20 +34,15 @@ const CreateTask = () => {
     const handleSubmit = async (e) =>{
         e.preventDefault()
         console.log(formData)
-        // try {
-        //     if(employeeId){
-        //         await updateEmployee(employeeId, formData, token)
-        //     }else{
-        //         await createEmployee(formData, token)
-        //     }
-        //     navigate('/employees')
-        // } catch (error) {
-        //     console.log({error: error})
-        // }
+        try {
+            await createTask(formData, token)
+        } catch (error) {
+            console.log({error: error})
+        }
     }
     
     const organizeEmployeeData = (rawEmployeeData) =>{
-        return  rawEmployeeData.map(employee =>{
+        return  rawEmployeeData?.map(employee =>{
             return {name: `${employee.first_name } ${employee.last_name }`, id: employee._id}  
       })
     }
