@@ -26,7 +26,10 @@ const employeeSchema = new Schema(
         role:{
             name: { type: String, required: true },
             code: { type: String, required: true }
-        }
+        },
+        tasks:[
+            {_id: { type: Schema.Types.ObjectId, ref: 'employee', required: true }}
+        ]
     }
 )
 
