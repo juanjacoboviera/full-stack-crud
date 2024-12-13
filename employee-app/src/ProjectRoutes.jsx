@@ -8,6 +8,7 @@ import CreateTask from './components/CreateTask';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Nav from './components/Nav';
 import { GlobalStore } from './GlobalProvider';
+import TaskList from './components/TaskList';
 function ProjectRoutes() {
   const {token} = useContext(GlobalStore)
   return (
@@ -24,6 +25,7 @@ function ProjectRoutes() {
             <Route exact path="/:employeeId" element={ <RegisterEmployee/>}/>
             <Route exact path="/employees" element={ <EmployeeDataTable/>} /> 
             <Route exact path="/createTask" element={ <CreateTask/>} /> 
+            <Route exact path="/tasks" element={ <TaskList/>} /> 
           </>
           :
           <Route path="*" element={<Navigate to="/" />} />

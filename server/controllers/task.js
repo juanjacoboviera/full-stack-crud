@@ -28,7 +28,8 @@ exports.createTask = async (req, res, next) =>{
 }
 
 exports.getTasks = async (req, res, next) =>{
-    const _id = req.body._id
+    const _id = req.params.userId
+    console.log(_id)
     try {
         const response = await Task.find({ "tasked_user.id": _id })
         if(response){
