@@ -11,7 +11,7 @@ const TaskList = () => {
       try {
         console.log(user?._id)
         const taskList = await getTasks(user?._id, token)
-        setTasks(taskList) 
+        setTasks(taskList.tasks) 
       } catch (error) {
         console.log(error)
       }
@@ -22,18 +22,20 @@ const TaskList = () => {
       console.log('Token does not exist or already expired!')
     }
   },[])
-
+console.log(tasks)
   return (
-    <div className='layout flex flex-col justify-center align-center'>
+    <div className='layout flex flex-col justify-center items-center'>
         <h1>These are the list of tasks assigned to you</h1>
-        <div className='flex flex-column gap-5 flex-wrap w-1/2 p-10 border-solid border border-black'>
-            <div className='flex flex-row justify-between'>
-                <p>Assigned by: Juan Jacobo Viera</p>
-                <p>01/22/2024</p>
-            </div>
-            <h2>Task Title</h2>
-            <p>This is the description of the task</p>
-        </div>
+        {tasks.map((task) =>{
+          return <div className='flex flex-col gap-5 flex-wrap w-1/2 p-10 border-solid border border-black mb-4'>
+                    <div className='flex flex-row justify-between'>
+                      <p>Assigned by: {task.task_creator.name}</p>
+                      <p>01/22/2024</p>
+                    </div>
+                    <h2>{task.title}</h2>
+                    <p>{task.description}</p>
+                  </div>
+          })}
     </div>
   )
 }

@@ -21,6 +21,7 @@ export const createTask = async (formData, token) =>{
 }
 
 export const getTasks = async (userId, token) =>{
+    console.log(userId)
     const url = `http://localhost:8080/api/tasks/${userId}`
     try {
         const response = await fetch(url, {
@@ -31,10 +32,11 @@ export const getTasks = async (userId, token) =>{
               }
         });
     if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+        const errorDetails = await response.text(); // Get error message from response body
+        throw new Error(`Response status: ${response.status}, Message: ${errorDetails}`);
     }
     const json = await response.json();
-    console.log(json);
+    return json;
     } catch (error) {
         console.error("there was an error:" , error.message);  
     }
