@@ -43,7 +43,7 @@ const CreateTask = () => {
     
     const organizeEmployeeData = (rawEmployeeData) =>{
         return  rawEmployeeData?.map(employee =>{
-            return {name: `${employee.first_name } ${employee.last_name }`, id: employee._id}  
+            return {name: `${employee?.first_name } ${employee?.last_name }`, id: employee?._id}  
       })
     }
 

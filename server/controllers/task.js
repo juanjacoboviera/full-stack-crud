@@ -6,7 +6,7 @@ exports.createTask = async (req, res, next) =>{
         title: req.body.title,
         description: req.body.description,
         duration: req.body.duration,
-        date_completed: req.body.date_completed,
+        task_completed: req.body.task_completed,
         tasked_user: req.body.tasked_user,
         task_creator: req.body.task_creator,
     });
@@ -23,14 +23,17 @@ exports.createTask = async (req, res, next) =>{
         })
     }
     } catch (error) {
+        res.status(500).json({
+            message: "There was an error!",
+            errorMessage: error
+    })
         console.log(error, "this is the error")
     }
 }
 
 exports.getTasks = async (req, res, next) =>{
-    console.log(req.params)
     const _id = req.params.id
-    console.log(_id)
+    console.log(_id, "id is here?")
     try {
         const response = await Task.find({ "tasked_user.id": _id })
         if(response){

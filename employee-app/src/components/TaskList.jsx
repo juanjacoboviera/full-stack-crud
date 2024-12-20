@@ -27,10 +27,12 @@ console.log(tasks)
     <div className='layout flex flex-col justify-center items-center'>
         <h1>These are the list of tasks assigned to you</h1>
         {tasks.map((task) =>{
+            const dateString = task.createdAt
+            const dateObj = new Date(dateString);
           return <div className='flex flex-col gap-5 flex-wrap w-1/2 p-10 border-solid border border-black mb-4'>
                     <div className='flex flex-row justify-between'>
                       <p>Assigned by: {task.task_creator.name}</p>
-                      <p>01/22/2024</p>
+                      <p>{dateObj.toLocaleDateString('en-US').toString()}</p>
                     </div>
                     <h2>{task.title}</h2>
                     <p>{task.description}</p>

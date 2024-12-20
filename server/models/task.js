@@ -15,13 +15,9 @@ const taskSchema = new Schema(
             type: Number,
             required: false
         },
-        date_completed: {
-            type: Date,
-            required: false
-        },
         task_completed: {
             type: Boolean,
-            required: false
+            required: true
         },
         tasked_user: {
             name: { type: String, required: true },
@@ -32,7 +28,8 @@ const taskSchema = new Schema(
         name: { type: String, required: true },
         id: { type: Schema.Types.ObjectId, ref: 'employee', required: true }
         }
-    }
+    },
+    { timestamps: true }
 )
 
 module.exports = mongoose.model("task", taskSchema)
