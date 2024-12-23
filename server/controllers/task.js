@@ -33,9 +33,15 @@ exports.createTask = async (req, res, next) =>{
 
 exports.getTasks = async (req, res, next) =>{
     const _id = req.params.id
-    console.log(_id, "id is here?")
+    const { taskType } = req.query;
+    let response = undefined
+    console.log(taskType)
     try {
-        const response = await Task.find({ "tasked_user.id": _id })
+        if(taskType == 'assigned'){
+            response = await Task.find({ "tasked_user.id": _id })
+        }else{
+            response = await Task.find({ "task_creator.id": _id })
+        }
         if(response){
             console.log(response)
             res.status(201).json({
@@ -45,5 +51,27 @@ exports.getTasks = async (req, res, next) =>{
         }
     } catch (error) {
         console.log(error, "this is the error")
+    }
+}
+
+exports.editTask = async (req, res, next) =>{
+    const _id = req.params.id
+    const updatedTask = req.body
+    console.log(updatedTask)
+    try {
+        const response = await Task.findByIdAndUpdate(_id, updatedTask)
+        if(response){
+            console.log(response)
+            res.status(201).json({
+                message: "Task updated successfully!",
+                task: response
+        })
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "There was an error!",
+            errorMessage: error
+    })
+        console.log(error)
     }
 }
