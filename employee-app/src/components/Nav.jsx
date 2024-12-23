@@ -24,7 +24,7 @@ const Nav = () => {
               <Link to='/employees'><li>Employee List</li></Link>
               <Link to="/">
                 <li>
-                  <Button onClick={()=>{
+                  <Button className='logOut-btn' onClick={()=>{
                     deleteCookie("token")
                     setToken(null)
                     setUser({})

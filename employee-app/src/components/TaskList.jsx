@@ -36,7 +36,7 @@ const TaskList = () => {
     console.log(response)
   }
 
-  const renderTasks = () =>tasks.map(task => <TaskCard key={task._id} handleSubmit={handleSubmit} task={task}/>)
+  const renderTasks = () =>tasks.map(task => <TaskCard key={task._id} handleSubmit={handleSubmit} task={task} userRole={user.role.code} activeIndex={activeIndex}/>)
 
   return (
     <div className='layout flex flex-col justify-center items-center'>
@@ -46,11 +46,11 @@ const TaskList = () => {
         {renderTasks()}
       </>
         :
-      <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
-          <TabPanel header="Task assigned to me">
+      <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} className='tabView-styles w-full'>
+          <TabPanel header="Task assigned to me" headerClassName={`tab-header-title-light ${activeIndex === 0 ? "tab-header-selected" : ""}`}>
               {renderTasks()}
           </TabPanel>
-          <TabPanel header="Task created by me">
+          <TabPanel header="Task created by me"  headerClassName={`tab-header-title-light ${activeIndex === 1 ? "tab-header-selected" : ""}`}>
               {renderTasks()}
           </TabPanel>
       </TabView>

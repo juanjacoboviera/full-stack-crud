@@ -32,7 +32,7 @@ export const getTasks = async (userId, token, taskType) =>{
               },
         });
     if (!response.ok) {
-        const errorDetails = await response.text(); // Get error message from response body
+        const errorDetails = await response.text(); 
         throw new Error(`Response status: ${response.status}, Message: ${errorDetails}`);
     }
     const json = await response.json();
