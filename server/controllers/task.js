@@ -1,6 +1,8 @@
 const Task = require('../models/task')
 const Employee = require("../models/employee")
 const { ObjectId } = require('mongodb');
+const {getPaginatedResult} = require("../helpers/helpers")
+
 exports.createTask = async (req, res, next) =>{
     const task = new Task({
         title: req.body.title,
@@ -33,20 +35,26 @@ exports.createTask = async (req, res, next) =>{
 
 exports.getTasks = async (req, res, next) =>{
     const _id = req.params.id
-    const { taskType } = req.query;
+    const { taskType, limit, offset } = req.query;
     let response = undefined
-    console.log(taskType)
+    const querySettings = {
+        limit: limit,
+        offset: offset,
+        searchFor: taskType == 'assigned' ? { "tasked_user.id": _id } : { "task_creator.id": _id },
+        model: Task,
+    }
     try {
         if(taskType == 'assigned'){
-            response = await Task.find({ "tasked_user.id": _id })
+            response = await getPaginatedResult(querySettings)
+            // response = await Task.find({ "tasked_user.id": _id })
         }else{
-            response = await Task.find({ "task_creator.id": _id })
+           response = await getPaginatedResult(querySettings)
+            // response = await Task.find({ "task_creator.id": _id })
         }
         if(response){
-            console.log(response)
             res.status(201).json({
                 message: "Tasks retrieved successfully!",
-                tasks: response
+                data: response
         })
         }
     } catch (error) {

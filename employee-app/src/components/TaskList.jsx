@@ -1,42 +1,68 @@
 import React, {useState, useEffect, useContext} from 'react'
 import { GlobalStore } from '../GlobalProvider'
 import { getTasks, updateTask } from '../services/taskServices'
-import { TabView, TabPanel } from 'primereact/tabview';       
+import { TabView, TabPanel } from 'primereact/tabview';    
+import { Paginator } from 'primereact/paginator';   
 import TaskCard from '../ui/TaskCard'
 
 const TaskList = () => {
   const {token, user} = useContext(GlobalStore)
   const [tasks, setTasks] = useState([])
   const [activeIndex, setActiveIndex] = useState(0);
+  const [first, setFirst] = useState(0);
+  const [paginationSettings, setPaginationSettings] = useState({
+    first: 0,
+    limit: 0,
+    total: 0
+  });
 
   const getData = async () => {
     try {
       if(activeIndex == 0){
-        const taskList = await getTasks(user?._id, token, 'assigned')
-        setTasks(taskList.tasks) 
+        console.log("entrando")
+        const taskList = await getTasks(user?._id, token, 'assigned', 3, first)
+        setTasks(taskList?.data?.items)
+        setPaginationSettings({
+          ...paginationSettings,
+          limit: taskList?.data?.limit,
+          total: taskList?.data?.total
+        }) 
       }else{
-        const taskList = await getTasks(user?._id, token, 'created')
-        setTasks(taskList.tasks)
+        const taskList = await getTasks(user?._id, token, 'created', 3,  first)
+        setTasks(taskList?.data?.items)
+        setPaginationSettings({
+          ...paginationSettings,
+          limit: taskList?.data?.limit,
+          total: taskList?.data?.total
+        }) 
+
       }
     } catch (error) {
       console.log(error)
     }
   }
-
+console.log(tasks)
   useEffect(()=>{
     if(token){
       getData()
     }else{
       console.log('Token does not exist or already expired!')
     }
-  },[activeIndex])
+  },[activeIndex, first])
 
   const handleSubmit = async (taskUpdated) =>{
     const response = await updateTask(taskUpdated?._id, taskUpdated, token, user.role.code)
     console.log(response)
   }
 
-  const renderTasks = () =>tasks.map(task => <TaskCard key={task._id} handleSubmit={handleSubmit} task={task} userRole={user.role.code} activeIndex={activeIndex}/>)
+  const renderTasks = () =>tasks?.map(task => <TaskCard key={task?._id} handleSubmit={handleSubmit} task={task} userRole={user.role.code} activeIndex={activeIndex}/>)
+
+  const onPageChange = (event) => {
+    console.log(event)
+    setFirst(event.first);
+    // setPaginationSettings({...paginationSettings, first: event.first});
+
+};
 
   return (
     <div className='layout flex flex-col justify-center items-center'>
@@ -55,6 +81,9 @@ const TaskList = () => {
           </TabPanel>
       </TabView>
       }
+       <div className="card">
+            <Paginator first={first} rows={paginationSettings?.limit} totalRecords={paginationSettings?.total} onPageChange={onPageChange} template={{ layout: 'PrevPageLink CurrentPageReport NextPageLink' }} />
+        </div>
     </div>
   )
 }

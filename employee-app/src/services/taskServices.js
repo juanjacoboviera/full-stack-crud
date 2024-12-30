@@ -20,9 +20,9 @@ export const createTask = async (formData, token) =>{
     }
 }
 
-export const getTasks = async (userId, token, taskType) =>{
+export const getTasks = async (userId, token, taskType, limit, offset) =>{
     console.log(userId)
-    const url = `http://localhost:8080/api/tasks/${userId}?taskType=${encodeURIComponent(taskType)}`
+    const url = `http://localhost:8080/api/tasks/${userId}?taskType=${encodeURIComponent(taskType)}&limit=${encodeURIComponent(limit)}&offset=${encodeURIComponent(offset)}`
     try {
         const response = await fetch(url, {
             method: "GET",

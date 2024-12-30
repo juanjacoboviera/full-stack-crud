@@ -1,5 +1,6 @@
 const Employee = require("../models/employee")
 const bcrypt = require('bcrypt');
+const {getPaginatedResult} = require("../helpers/helpers")
 
 exports.registerUser = (req, res, next) =>{
     const saltRounds = 10;
@@ -53,11 +54,18 @@ exports.createEmployee = (req, res, next) =>{
 
 
 exports.getEmployees = async (req, res, next) => {
+    const { limit, offset } = req.query;
+    const querySettings = {
+        limit: limit,
+        offset: offset,
+        searchFor: {},
+        model: Employee,
+    }
     try {
-        const employees = await Employee.find();
+        // const employees = await Employee.find();
+        const employees = await getPaginatedResult(querySettings)
         console.log(employees)
-        res.status(200).send(employees); 
-        console.log('Operation succeeded:', employees);
+        res.status(200).send({message: 'Operation succeeded:', data: employees}); 
     } catch (error) {
         console.error('An error occurred:', error.message);
 

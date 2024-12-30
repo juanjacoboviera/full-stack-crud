@@ -48,9 +48,9 @@ export default async function createEmployee(employeeData, token) {
     }
 }
 
-export async function getEmployees(token) {
+export async function getEmployees(token, limit, offset) {
 
-  const myUrl = 'http://localhost:8080/api/employees'
+  const myUrl = `http://localhost:8080/api/employees?&limit=${encodeURIComponent(limit)}&offset=${encodeURIComponent(offset)}`
     try {
       const response = await fetch(myUrl, {
         method: 'GET', 
