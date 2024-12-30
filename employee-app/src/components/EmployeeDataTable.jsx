@@ -8,41 +8,34 @@ import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../helpers/cookies';
 
 const EmployeeDataTable = () => {
-  const [loading, setLoading] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [userId, setUserId] = useState('');
   const navigate = useNavigate();
   const token = getCookie('token')
   const [lazyState, setlazyState] = useState({
     first: 0,
-    rows: 0,
+    rows: 2,
     page: 1,
-    total: 0
 });
 
   useEffect(()=>{
     const getData = async (token) => {
         const employeeList = await getEmployees(token, 2, lazyState.first)
-        setEmployees(employeeList.data.items)
-        setlazyState({
-          ...lazyState,
-          rows: employeeList?.data?.limit,
-          total: employeeList?.data?.total,
-          // page:  employeeList?.data?.offset
-        })  
+        setEmployees(employeeList?.data.items)
+        setTotalRecords(employeeList?.data?.total)
     }
     if(token){
       getData(token)
     }else{
       console.log('Token does not exist or already expired!')
     }
-  },[userId, loading])
+  },[userId, lazyState])
   const editEmployee =  (id) => {
     navigate(`/${id}`);
   }
 
   const onPage = (event) => {
-    setLoading(true)
     setlazyState(event);
 };
 
@@ -72,7 +65,7 @@ console.log(lazyState)
   return (
     <div className="layout flex justify-center">
       <div className="container flex justify-center mt-10">
-        <DataTable value={employees} tableClassName='border-solid border-black border rounded text-center' paginator lazy first={lazyState.first} rows={lazyState?.rows} totalRecords={lazyState?.total} onPage={onPage} paginatorTemplate={{ layout: 'PrevPageLink CurrentPageReport NextPageLink' }} tableStyle={{ minWidth: '50rem' }}>
+        <DataTable value={employees} tableClassName='border-solid border-black border rounded text-center' paginator lazy first={lazyState.first} rows={2} totalRecords={totalRecords} onPage={onPage} paginatorTemplate={{ layout: 'PrevPageLink CurrentPageReport NextPageLink' }} tableStyle={{ minWidth: '50rem' }}>
             {columns.map((col, i) => (
                 <Column 
                 key={col.field} 

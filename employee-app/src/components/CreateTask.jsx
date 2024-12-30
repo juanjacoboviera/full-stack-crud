@@ -50,7 +50,8 @@ const CreateTask = () => {
 useEffect(()=>{
         const getData = async () => {
             const rawEmployeesData = await getEmployees(token)
-            const employeesList = organizeEmployeeData(rawEmployeesData)
+            console.log(rawEmployeesData)
+            const employeesList = organizeEmployeeData(rawEmployeesData.data.items)
             setEmployeeOptions(employeesList)        
         }
         getData()
