@@ -16,7 +16,9 @@ const Nav = () => {
           <div className="nav-elements">
             <ul className='flex flex-row gap-10'>
             <Link to='/dashboard'><li>Dashboard</li></Link>
-            <Link to='/createTask'><li>Create Task</li></Link>
+            {user.role.code == 'admin' ||  user.role.code == 'superAdmin' &&
+              <Link to='/createTask'><li>Create Task</li></Link>
+               }
             <Link to='/tasks'><li>Tasks</li></Link>
               {user.role.code == 'admin' ||  user.role.code == 'superAdmin' &&
               <Link to='/registerEmployee'><li>Create Employee</li></Link>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import  {getEmployees, deleteEmployee} from '../services/employeeServices';
@@ -6,8 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../helpers/cookies';
+import { GlobalStore } from '../GlobalProvider';
 
 const EmployeeDataTable = () => {
+  const {user} = useContext(GlobalStore)
   const [totalRecords, setTotalRecords] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [userId, setUserId] = useState('');
@@ -18,7 +20,7 @@ const EmployeeDataTable = () => {
     rows: 2,
     page: 1,
 });
-
+ 
   useEffect(()=>{
     const getData = async (token) => {
         const employeeList = await getEmployees(token, 2, lazyState.first)
@@ -31,7 +33,9 @@ const EmployeeDataTable = () => {
       console.log('Token does not exist or already expired!')
     }
   },[userId, lazyState])
+  
   const editEmployee =  (id) => {
+    if(user.role.code == 'user'){return}
     navigate(`/${id}`);
   }
 
@@ -43,7 +47,7 @@ const EmployeeDataTable = () => {
     deleteEmployee(id, token)
     setUserId(id, token)
   }
-console.log(lazyState)
+
   const actionsBodyTemplate = (rowData) =>{
     const {_id} = rowData
     return(
@@ -53,7 +57,8 @@ console.log(lazyState)
       </div>
     )    
   }
-
+  
+  
   const columns = [
       {field: 'first_name', header: 'First name'},
       {field: 'last_name', header: 'Last Name'},
@@ -69,8 +74,18 @@ console.log(lazyState)
             {columns.map((col, i) => (
                 <Column 
                 key={col.field} 
-                field={col.field} header={col.header} 
-                // body={col.field === 'job_dept.name' ? (rowData) => rowData.job_dept.name : undefined || col.field === actionsBodyTemplate ? (rowData)=> actionsBodyTemplate(rowData) : undefined}xw         
+                header={col.header} 
+                field={col.field} 
+                // body={col.field === 'job_dept.name' ? (rowData) => rowData.job_dept.name : undefined || col.field === actionsBodyTemplate ? (rowData)=> actionsBodyTemplate(rowData) : undefined}
+                body={(rowData) => {
+                  if (col.field === 'job_dept.name') {
+                    return rowData.job_dept?.name || 'Not assigned';
+                  }
+                  if (col.field === actionsBodyTemplate){
+                    return actionsBodyTemplate(rowData)
+                  }
+                  return rowData[col.field];
+                }}
                 />
             ))}
         </DataTable>

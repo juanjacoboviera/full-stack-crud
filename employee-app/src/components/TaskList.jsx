@@ -19,7 +19,6 @@ const TaskList = () => {
   const getData = async () => {
     try {
       if(activeIndex == 0){
-        console.log("entrando")
         const taskList = await getTasks(user?._id, token, 'assigned', 3, first)
         setTasks(taskList?.data?.items)
         setPaginationSettings({
@@ -41,7 +40,6 @@ const TaskList = () => {
       console.log(error)
     }
   }
-console.log(tasks)
   useEffect(()=>{
     if(token){
       getData()
