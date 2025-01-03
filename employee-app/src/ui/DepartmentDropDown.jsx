@@ -17,13 +17,12 @@ const DepartmentDropDown = ({colField, rowData, onSubmit, actionsBodyTemplate, s
     const renderField = () =>{
       if (colField === 'job_dept.name' && activeIndex == rowData._id ){
         return <Dropdown className="className='border-solid border-black border rounded dataTable-input" panelClassName='border-solid border-black border rounded bg-white' value={department}  onChange={({ target: { value } }) =>{
-          // setDepartment(value)
           onSubmit(rowData._id, value)
-          setActiveIndex(0)
+
         }}  options={jobDeptOptions} optionLabel="name"  placeholder='Select a department' />
       }
       if (colField === 'job_dept.name') {
-        console.log(rowData.job_dept?.name, 'did it work?')
+        // console.log(rowData.job_dept?.name, 'did it work?')
         return rowData.job_dept?.name || <Button id={rowData._id} onClick={() => setActiveIndex(rowData._id)}    className='assignDept-btn' label='Click to assign' icon={<FontAwesomeIcon className='cursor-pointer mr-1' icon={faPencil} />}/>;
       }
       if (colField === actionsBodyTemplate){

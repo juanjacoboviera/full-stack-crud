@@ -91,6 +91,7 @@ exports.getEmployee = async (req, res, next) => {
 
 exports.updateEmployee = async (req, res) => {
     let userPassword = ""
+    console.log( req.body.job_dept, "what is it?")
     const _id = req.params.id
     if(!req.body) {
         return res.status(400).send({
@@ -120,7 +121,7 @@ exports.updateEmployee = async (req, res) => {
                 message: `User not found.`
             });
         }else{
-            res.send({ message: "User updated successfully.", userData: updatedEmployee })
+            res.send({ message: "User updated successfully.", userData: data })
         }
     }).catch(err => {
         res.status(500).send({

@@ -35,30 +35,29 @@ const EmployeeDataTable = () => {
     }else{
       console.log('Token does not exist or already expired!')
     }
-  },[userId, lazyState, department])
+  },[userId, lazyState, activeIndex])
   
   const editEmployee =  (id) => {
     if(user.role.code == 'user'){return}
     navigate(`/${id}`);
   }
-console.log(department)
+
   const onPage = (event) => {
     setlazyState(event);
-};
+  };
 
   const removeEmployee = async (id) => {
-    deleteEmployee(id, token)
-    setUserId(id, token)
+    await deleteEmployee(id, token)
+    setUserId(id)
   }
 
   const onSubmit = async (employeeId, inputValue) => {
-    setDepartment(inputValue)
     const formData = {
       job_dept: inputValue
     }
-  const result = await updateEmployee(employeeId, formData, token)
-  console.log(result)
-
+      await updateEmployee(employeeId, formData, token)
+    setActiveIndex(0) 
+    setDepartment(inputValue)
 }
 
 const actionsBodyTemplate = (rowData) =>{
@@ -78,6 +77,8 @@ const actionsBodyTemplate = (rowData) =>{
       {field: actionsBodyTemplate, header: 'Actions'}
   ];
 
+console.log(employees)
+
   return (
     <div className="layout flex justify-center">
       <div className="container flex justify-center mt-10">
@@ -88,8 +89,7 @@ const actionsBodyTemplate = (rowData) =>{
                 header={col.header} 
                 field={col.field} 
                 // body={col.field === 'job_dept.name' ? (rowData) => rowData.job_dept.name : undefined || col.field === actionsBodyTemplate ? (rowData)=> actionsBodyTemplate(rowData) : undefined}
-                body={(rowData) => <DepartmentDropDown colField={col.field} rowData={rowData} onSubmit={onSubmit} actionsBodyTemplate={actionsBodyTemplate} activeIndex={activeIndex} setActiveIndex={setActiveIndex} setDepartment={setDepartment} department={department}/>}
-                />
+                body={(rowData) => <DepartmentDropDown colField={col.field} rowData={rowData} onSubmit={onSubmit} actionsBodyTemplate={actionsBodyTemplate} activeIndex={activeIndex} setActiveIndex={setActiveIndex} setDepartment={setDepartment} department={department}/>}/>
             ))}
         </DataTable>
       </div>
