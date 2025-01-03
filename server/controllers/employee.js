@@ -91,13 +91,14 @@ exports.getEmployee = async (req, res, next) => {
 
 exports.updateEmployee = async (req, res) => {
     let userPassword = ""
+    const _id = req.params.id
     if(!req.body) {
         return res.status(400).send({
             message: "Data to update cannot be empty!"
         });
     }
     if(!req.body.password){
-        const employee = await Employee.findById(req.body._id);
+        const employee = await Employee.findById(_id);
         const {password} = employee
         userPassword = password
     }else{

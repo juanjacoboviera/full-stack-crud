@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import  {getEmployees, deleteEmployee} from '../services/employeeServices';
+import  {getEmployees, deleteEmployee, updateEmployee} from '../services/employeeServices';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { GlobalStore } from '../GlobalProvider';
 import DepartmentDropDown from '../ui/DepartmentDropDown';
 
 const EmployeeDataTable = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const {user} = useContext(GlobalStore)
   const [totalRecords, setTotalRecords] = useState(null);
   const [department, setDepartment] = useState({});
@@ -22,7 +23,7 @@ const EmployeeDataTable = () => {
     rows: 2,
     page: 1,
 });
- 
+
   useEffect(()=>{
     const getData = async (token) => {
         const employeeList = await getEmployees(token, 2, lazyState.first)
@@ -40,7 +41,7 @@ const EmployeeDataTable = () => {
     if(user.role.code == 'user'){return}
     navigate(`/${id}`);
   }
-
+console.log(department)
   const onPage = (event) => {
     setlazyState(event);
 };
@@ -50,8 +51,14 @@ const EmployeeDataTable = () => {
     setUserId(id, token)
   }
 
-  const onSubmit = (value) => {
-   console.log(value)
+  const onSubmit = async (employeeId, inputValue) => {
+    setDepartment(inputValue)
+    const formData = {
+      job_dept: inputValue
+    }
+  const result = await updateEmployee(employeeId, formData, token)
+  console.log(result)
+
 }
 
 const actionsBodyTemplate = (rowData) =>{
@@ -81,20 +88,7 @@ const actionsBodyTemplate = (rowData) =>{
                 header={col.header} 
                 field={col.field} 
                 // body={col.field === 'job_dept.name' ? (rowData) => rowData.job_dept.name : undefined || col.field === actionsBodyTemplate ? (rowData)=> actionsBodyTemplate(rowData) : undefined}
-                body={(rowData, e) => {
-                  return <DepartmentDropDown colField={col.field} rowData={rowData} onSubmit={onSubmit} editEmployee={editEmployee} removeEmployee={removeEmployee} actionsBodyTemplate={actionsBodyTemplate}/>
-                  
-                  // if (col.field === 'job_dept.name' && department.readyToAssign == true ){
-                  //   return <Dropdown className="className='border-solid border-black border rounded" panelClassName='border-solid border-black border rounded bg-white' value={department?.inputData}  onChange={({ target: { value } }) => handleChange('inputData', value)}  options={jobDeptOptions} optionLabel="name"  placeholder='Select a department' />
-                  // }
-                  // if (col.field === 'job_dept.name') {
-                  //   return rowData.job_dept?.name || <Button id={rowData._id} onClick={() => setDepartment({...department, readyToAssign: true})}    className='assignDept-btn' label='Click to assign' icon={<FontAwesomeIcon className='cursor-pointer mr-1' icon={faPencil} />}/>;
-                  // }
-                  // if (col.field === actionsBodyTemplate){
-                  //   return actionsBodyTemplate(rowData)
-                  // }
-                  // return rowData[col.field];
-                }}
+                body={(rowData) => <DepartmentDropDown colField={col.field} rowData={rowData} onSubmit={onSubmit} actionsBodyTemplate={actionsBodyTemplate} activeIndex={activeIndex} setActiveIndex={setActiveIndex} setDepartment={setDepartment} department={department}/>}
                 />
             ))}
         </DataTable>
